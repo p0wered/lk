@@ -1,0 +1,27 @@
+@media screen and (max-width: 860px) {
+    .md-text{
+        font-size: 20px;
+        line-height: 26px;
+    }
+    .desktop-navbar {
+        display: none !important;
+    }
+    .desktop-menu{
+        display: none !important;
+    }
+    .container{
+        margin: auto 0 !important;
+    }
+}
+
+@media screen and (max-width: 1400px) {
+    .container{
+        max-width: 860px; !important;
+    }
+    .desktop-navbar {
+        max-width: 860px !important;
+    }
+    .desktop-menu{
+        max-width: 860px !important;
+    }
+}

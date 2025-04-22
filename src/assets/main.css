@@ -1,0 +1,135 @@
+@font-face {
+    font-family: 'ABeeZee';
+    src: url('../fonts/ABeeZee-Regular.ttf') format('ttf');
+    font-weight: 400;
+    font-display: swap;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'ABeeZee';
+    src: url('../fonts/ABeeZee-Italic.ttf') format('ttf');
+    font-weight: 400;
+    font-display: swap;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Sora';
+    src: url('../fonts/Sora-Variable.ttf') format('ttf');
+    font-weight: 100 800;
+    font-display: swap;
+    font-style: normal;
+}
+
+:root{
+    --content-dark: #000000;
+    --content-darker: #BFBFBFFF;
+    --content-light: #FFFFFF;
+    --content-neutral: #575757;
+    --primary-700: #004EE4;
+    --primary-500: #4D72F5;
+    --primary-300: #A2B7FF;
+    --primary-100: #EAEEFFFF;
+    --secondary-300: #FDFF96;
+    --error: #EB6C86FF;
+}
+
+::selection {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+}
+
+::-moz-selection {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-synthesis: none !important;
+
+}
+
+html {
+    height: 100%;
+    scroll-behavior: smooth;
+    font-family: 'ABeeZee', sans-serif;
+    font-weight: 400;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    color: var(--content-dark);
+    background-color: var(--content-light);
+}
+
+p, h1, h2, h3, h4 {
+    margin: 0;
+    padding: 0;
+}
+
+p, input{
+    font-size: 16px;
+    padding: 0;
+}
+
+a, a:visited{
+    font-size: 16px;
+    text-decoration: none;
+    color: inherit;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+textarea:focus, input:focus{
+    outline: none;
+}
+
+*:focus {
+    outline: none;
+}
+
+.container{
+    width: 100%;
+    max-width: 996px;
+    margin: 80px auto 0;
+}
+
+.flex-center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.xxs-text{
+    font-size: 10px;
+}
+
+.xs-text{
+    font-size: 13px;
+    line-height: 16px;
+}
+
+.sm-text{
+    font-size: 14px;
+}
+
+.md-text{
+    font-size: 24px;
+    line-height: 32px;
+}
