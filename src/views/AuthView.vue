@@ -3,6 +3,7 @@
   import {ref, watch} from 'vue';
   import SmsCodeInput from "../components/SmsCodeInput.vue";
   import ButtonPrimary from "../components/ButtonPrimary.vue";
+  import axios from "../api/axios";
 
   const countryCode = ref('7');
   const phoneNumber = ref('');
@@ -54,7 +55,18 @@
   const handleSubmit = () => {
     validatePhoneNumber();
     if (isValid.value) {
-      console.log('Форма отправлена', countryCode.value, phoneNumber.value);
+
+      axios.post('/auth/phone', {
+        site_id: 4,
+        phone_number: '7' + phoneNumber.value.replaceAll('-', '')
+      }).then(({data}) => {
+        if(data.user_id) {
+          localStorage.access_token = data.user_id
+          window.location.href = '/'
+        }
+      })
+
+
       isPhoneSubmitted.value = true;
     }
   };
@@ -118,7 +130,7 @@
         </p>
         <ButtonPrimary
             text="Next →"
-            @click="isPhoneSubmitted ? handleCodeSubmit() : handleSubmit()"
+            @click="handleSubmit()"
             :disabled="!isPhoneSubmitted ? !isValid : false"
         />
       </div>

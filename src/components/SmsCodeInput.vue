@@ -55,8 +55,9 @@ const onBackspace = (index: number) => {
 
 <template>
   <div class="code-container">
+    <!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
     <input
-        v-for="(digit, index) in codeDigits"
+        v-for="(_, index) in codeDigits"
         :key="index"
         type="tel"
         inputmode="numeric"
@@ -65,7 +66,7 @@ const onBackspace = (index: number) => {
         v-model="codeDigits[index]"
         @input="onInput(index)"
         @keydown.backspace="onBackspace(index)"
-        :ref="el => {codeRefs[index] = el}"
+        :ref="el => {codeRefs[index] = el as any}"
     />
   </div>
 </template>

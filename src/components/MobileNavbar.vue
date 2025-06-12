@@ -26,6 +26,7 @@
     }
   })
 
+  // @ts-ignore
   const handleMenuScroll = (event) => {
     event.stopPropagation()
 

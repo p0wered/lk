@@ -9,6 +9,24 @@
   import DraggableScroll from "../components/DraggableScroll.vue";
   import DesktopNavbar from "../components/DesktopNavbar.vue";
   import MobileNavbar from "../components/MobileNavbar.vue";
+  import axios from "../api/axios";
+  import {ref} from "vue";
+
+  const user_data = ref('');
+  const subscriptions = ref('');
+  const transactions = ref('');
+
+  axios.get('/user_data').then(({data}) => {
+    user_data.value = data.data[0]
+  })
+
+  axios.get('/subscriptions/my').then(({data}) => {
+    subscriptions.value = data.data
+  })
+
+  axios.get('/transactions').then(({data}) => {
+    transactions.value = data.data
+  })
 </script>
 
 <template>
@@ -18,7 +36,7 @@
     <div class="heading-box">
       <div class="heading">
         <div>
-          <p class="md-text" style="margin-bottom: 6px">Иван Иванович</p>
+          <p class="md-text" style="margin-bottom: 6px">{{user_data.last_name}} {{user_data.first_name}}</p>
           <p class="xs-text">Добро пожаловать!</p>
         </div>
         <div class="btn-layout" style="align-items: center">
@@ -33,10 +51,13 @@
       <div>
         <p class="xs-text" style="margin: 0 0 10px 16px">Мои способы оплаты</p>
         <DraggableScroll data-aos="fade-left">
-          <CreditCard card-style="blue" />
-          <CreditCard card-style="yellow" />
-          <CreditCard card-style="blue" />
-          <CreditCard card-style="yellow" />
+          <template v-for="sub in subscriptions">
+            <CreditCard :payment-system="sub.status"
+                        :bank-name="sub.bank_emitent ?? 'Неизвестный банк'"
+                        :card-number="sub.card_mask"
+                        card-style="blue"
+            />
+          </template>
         </DraggableScroll>
       </div>
     </div>
