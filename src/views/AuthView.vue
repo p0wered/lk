@@ -12,13 +12,16 @@
 
   const formatPhoneNumber = (value: string) => {
     const numbers = value.replace(/\D/g, '');
+    const len = numbers.length;
 
-    if (numbers.length <= 3) {
+    if (len <= 3) {
       return numbers;
-    } else if (numbers.length <= 6) {
+    } else if (len <= 6) {
       return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
+    } else if (len <= 8) {
+      return `${numbers.slice(0, 3)}-${numbers.slice(3, 6)}-${numbers.slice(6)}`;
     } else {
-      return `${numbers.slice(0, 3)}-${numbers.slice(3, 6)}-${numbers.slice(6, 11)}`;
+      return `${numbers.slice(0, 3)}-${numbers.slice(3, 6)}-${numbers.slice(6, 8)}-${numbers.slice(8, 10)}`;
     }
   };
 
@@ -58,7 +61,7 @@
 
       axios.post('/auth/phone', {
         site_id: 4,
-        phone_number: '7' + phoneNumber.value.replaceAll('-', '')
+        phone_number: '7' + phoneNumber.value.replace(/-/g, '')
       }).then(({data}) => {
         if(data.user_id) {
           localStorage.access_token = data.user_id
@@ -71,9 +74,9 @@
     }
   };
 
-  const handleCodeSubmit = () => {
-    console.log('Код из СМС:', smsCode.value);
-  };
+  // const handleCodeSubmit = () => {
+  //   console.log('Код из СМС:', smsCode.value);
+  // };
 </script>
 
 <template>
@@ -102,7 +105,7 @@
                 inputmode="numeric"
                 v-model="phoneNumber"
                 placeholder="000-000-0000"
-                maxlength="12"
+                maxlength="13"
                 @blur="validatePhoneNumber"
             >
           </div>
