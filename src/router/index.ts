@@ -5,7 +5,7 @@ import AuthView from "../views/AuthView.vue";
 
 const routes = [
     {
-        path: '/',
+        path: '/lk',
         component: ProfileView,
         meta: {
             needAuth: true
