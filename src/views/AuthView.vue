@@ -54,29 +54,50 @@
 
   const isPhoneSubmitted = ref(false);
   const smsCode = ref('');
+  const taskId = ref('');
 
   const handleSubmit = () => {
     validatePhoneNumber();
     if (isValid.value) {
 
-      axios.post('/auth/phone', {
-        site_id: 4,
-        phone_number: '7' + phoneNumber.value.replace(/-/g, '')
+      axios.post('https://api.finance.ingroup.tech/api/phone-verification?=7', {
+        token: 'X9d7QpL2mVt4bNcEwRf3',
+        phone: '7' + phoneNumber.value.replace(/-/g, '')
       }).then(({data}) => {
-        if(data.user_id) {
-          localStorage.access_token = data.user_id
-          window.location.href = '/'
+        console.log(data.data.id)
+        if(data.data.id) {
+          localStorage.taskId = data.data.id
         }
       })
-
 
       isPhoneSubmitted.value = true;
     }
   };
 
-  // const handleCodeSubmit = () => {
-  //   console.log('Код из СМС:', smsCode.value);
-  // };
+  const handleCodeSubmit = () => {
+    var els = document.getElementsByClassName("code-box");
+    let code = ''
+    Array.prototype.forEach.call(els, function(el) {
+      // Do stuff here
+      console.log(el.value)
+      code = code + el.value
+    });
+
+    axios.get('https://api.finance.ingroup.tech/api/phone-verification?id='+localStorage.taskId+'&token=X9d7QpL2mVt4bNcEwRf3&code='+code).then(({data}) => {
+      console.log(data.data.id)
+      if(data.data.status === true) {
+        axios.post('/auth/phone', {
+          site_id: 4,
+          phone_number: '7' + phoneNumber.value.replace(/-/g, '')
+        }).then(({data}) => {
+          if(data.user_id) {
+            localStorage.access_token = data.user_id
+          }
+        })
+      }
+    })
+    console.log('Код из СМС:', smsCode.value);
+  };
 </script>
 
 <template>
@@ -91,7 +112,7 @@
           </p>
           <p class="sm-text">
             {{isPhoneSubmitted
-              ? 'Введите код из отправленного Вам сообщения'
+              ? 'Введите последние 4 цифры номера телефона входящего звонка'
               : 'Введите номер телефона, который указывали при регистрации' }}
           </p>
         </div>
@@ -133,7 +154,7 @@
         </p>
         <ButtonPrimary
             text="Next →"
-            @click="handleSubmit()"
+            @click="!isPhoneSubmitted ? handleSubmit() : handleCodeSubmit()"
             :disabled="!isPhoneSubmitted ? !isValid : false"
         />
       </div>
