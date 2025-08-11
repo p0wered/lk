@@ -1,4 +1,4 @@
-import {createMemoryHistory, createRouter} from 'vue-router'
+import { createWebHistory, createRouter } from 'vue-router'
 
 import ProfileView from '../views/ProfileView.vue'
 import AuthView from "../views/AuthView.vue";
@@ -18,7 +18,7 @@ const routes = [
 ]
 
 const router = createRouter({
-    history: createMemoryHistory(),
+    history: createWebHistory(),
     routes,
 });
 
