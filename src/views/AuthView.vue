@@ -4,6 +4,7 @@
   import SmsCodeInput from "../components/SmsCodeInput.vue";
   import ButtonPrimary from "../components/ButtonPrimary.vue";
   import axios from "../api/axios";
+  import { getCookie } from "../utils/common.ts";
 
   const countryCode = ref('7');
   const phoneNumber = ref('');
@@ -54,7 +55,6 @@
 
   const isPhoneSubmitted = ref(false);
   const smsCode = ref('');
-  const taskId = ref('');
 
   const handleSubmit = () => {
     validatePhoneNumber();
@@ -87,7 +87,7 @@
       console.log(data.data.id)
       if(data.data.status === true) {
         axios.post('/auth/phone', {
-          site_id: 4,
+          site_id: getCookie('site_id'),
           phone_number: '7' + phoneNumber.value.replace(/-/g, '')
         }).then(({data}) => {
           if(data.user_id) {

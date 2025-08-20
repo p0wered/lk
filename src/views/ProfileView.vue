@@ -52,10 +52,11 @@
         <p class="xs-text" style="margin: 0 0 10px 16px">Мои способы оплаты</p>
         <DraggableScroll data-aos="fade-left">
           <template v-for="sub in subscriptions">
-            <CreditCard :payment-system="sub.status"
-                        :bank-name="sub.bank_emitent ?? 'Неизвестный банк'"
-                        :card-number="sub.card_mask"
-                        card-style="blue"
+            <CreditCard
+                :payment-system="sub.status"
+                :bank-name="sub.bank_emitent ?? 'Неизвестный банк'"
+                :card-number="sub.card_mask"
+                card-style="blue"
             />
           </template>
         </DraggableScroll>
