@@ -55,22 +55,49 @@
 
   const isPhoneSubmitted = ref(false);
   const smsCode = ref('');
+  const canResend = ref(true);
+  const resendTimer = ref(0);
+
+  const sendPhoneRequest = () => {
+    return axios.post('https://api.finance.ingroup.tech/api/phone-verification?=7', {
+      token: 'X9d7QpL2mVt4bNcEwRf3',
+      phone: '7' + phoneNumber.value.replace(/-/g, '')
+    }).then(({data}) => {
+      console.log(data.data.id)
+      if(data.data.id) {
+        localStorage.taskId = data.data.id
+      }
+    });
+  };
+
+  const startResendTimer = () => {
+    canResend.value = false;
+    resendTimer.value = 15;
+    
+    const timer = setInterval(() => {
+      resendTimer.value--;
+      if (resendTimer.value <= 0) {
+        clearInterval(timer);
+        canResend.value = true;
+      }
+    }, 1000);
+  };
 
   const handleSubmit = () => {
     validatePhoneNumber();
     if (isValid.value) {
+      sendPhoneRequest().then(() => {
+        isPhoneSubmitted.value = true;
+        startResendTimer();
+      });
+    }
+  };
 
-      axios.post('https://api.finance.ingroup.tech/api/phone-verification?=7', {
-        token: 'X9d7QpL2mVt4bNcEwRf3',
-        phone: '7' + phoneNumber.value.replace(/-/g, '')
-      }).then(({data}) => {
-        console.log(data.data.id)
-        if(data.data.id) {
-          localStorage.taskId = data.data.id
-        }
-      })
-
-      isPhoneSubmitted.value = true;
+  const handleResendCall = () => {
+    if (canResend.value) {
+      sendPhoneRequest().then(() => {
+        startResendTimer();
+      });
     }
   };
 
@@ -149,11 +176,18 @@
           <a href="#" class="xs-text" style="color: var(--primary-500)">согласием на обработку ПД</a>
         </p>
         <p v-else class="xs-text">
-          Не получили сообщение?
-          <a href="#" class="xs-text" style="color: var(--primary-500)">Отправить ещё раз...</a>
+          <a 
+            href="#" 
+            class="xs-text" 
+            :style="{ color: canResend ? 'var(--primary-500)' : 'var(--content-neutral)' }"
+            @click.prevent="handleResendCall"
+            :class="{ disabled: !canResend }"
+          >
+            {{ canResend ? 'Повторный звонок' : `Повторный звонок через ${resendTimer} с` }}
+          </a>
         </p>
         <ButtonPrimary
-            text="Next →"
+            text="Продолжить →"
             @click="!isPhoneSubmitted ? handleSubmit() : handleCodeSubmit()"
             :disabled="!isPhoneSubmitted ? !isValid : false"
         />
@@ -240,6 +274,11 @@
     color: var(--error);
     font-size: 14px;
     text-align: center;
+  }
+
+  .disabled {
+    pointer-events: none;
+    cursor: not-allowed;
   }
 
   .sms-input input {
