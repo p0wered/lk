@@ -5,6 +5,7 @@
   import ButtonPrimary from "../components/ButtonPrimary.vue";
   import axios from "../api/axios";
   import { getCookie } from "../utils/common.ts";
+  import { useAutoDocs } from "@/utils/auto-docs.ts";
 
   const countryCode = ref('7');
   const phoneNumber = ref('');
@@ -125,6 +126,11 @@
     })
     console.log('Код из СМС:', smsCode.value);
   };
+
+  const {
+    personalDataPoliticPdf,
+    personalDataAgreementPdf
+  } = useAutoDocs();
 </script>
 
 <template>
@@ -171,9 +177,23 @@
       <div class="flex-center" style="gap: 20px">
         <p v-if="!isPhoneSubmitted" class="xs-text">
           Продолжая, вы соглашаетесь с
-          <a href="#" class="xs-text" style="color: var(--primary-500)">политикой обработки ПД</a>
+          <a
+            v-if="personalDataPoliticPdf"
+            :href="personalDataPoliticPdf"
+            class="xs-text"
+            style="color: var(--primary-500)"
+          >
+            политикой обработки ПД
+          </a>
           и
-          <a href="#" class="xs-text" style="color: var(--primary-500)">согласием на обработку ПД</a>
+          <a
+            v-if="personalDataPoliticPdf"
+            :href="personalDataPoliticPdf"
+            class="xs-text"
+            style="color: var(--primary-500)"
+          >
+            согласием на обработку ПД
+          </a>
         </p>
         <p v-else class="xs-text">
           <a 
