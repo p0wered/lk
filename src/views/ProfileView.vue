@@ -12,9 +12,9 @@
   import axios from "../api/axios";
   import {ref} from "vue";
 
-  const user_data = ref('');
-  const subscriptions = ref('');
-  const transactions = ref('');
+  const user_data = ref<any>({});
+  const subscriptions = ref<any[]>([]);
+  const transactions = ref<any[]>([]);
 
   axios.get('/user_data').then(({data}) => {
     user_data.value = data.data[0]

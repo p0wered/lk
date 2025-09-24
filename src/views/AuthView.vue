@@ -121,7 +121,7 @@
         }).then(({data}) => {
           if(data.user_id) {
             localStorage.access_token = data.user_id
-            router.push('/profile')
+            router.push('/lk')
           }
         })
       }
