@@ -4,8 +4,9 @@
   import SmsCodeInput from "../components/SmsCodeInput.vue";
   import ButtonPrimary from "../components/ButtonPrimary.vue";
   import axios from "../api/axios";
-  import { getCookie } from "../utils/common.ts";
+  import { getCookie } from "@/utils/common.ts";
   import { useAutoDocs } from "@/utils/auto-docs.ts";
+  import router from "@/router";
 
   const countryCode = ref('7');
   const phoneNumber = ref('');
@@ -120,6 +121,7 @@
         }).then(({data}) => {
           if(data.user_id) {
             localStorage.access_token = data.user_id
+            router.push('/profile')
           }
         })
       }
@@ -187,8 +189,8 @@
           </a>
           и
           <a
-            v-if="personalDataPoliticPdf"
-            :href="personalDataPoliticPdf"
+            v-if="personalDataAgreementPdf"
+            :href="personalDataAgreementPdf"
             class="xs-text"
             style="color: var(--primary-500)"
           >
